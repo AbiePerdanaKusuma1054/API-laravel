@@ -17,8 +17,8 @@ class CreateDataTable extends Migration
             $table->id();
             $table->string('nama');
             $table->integer('skor');
-            $table->foreignId('tipe_id');
-            $table->foreignId('diagnosa_id');
+            $table->foreignId('tipe_id')->constrained('tipes')->onDelete('cascade');
+            $table->foreignId('diagnosa_id')->constrained('diagnosas')->onDelete('cascade');
             $table->timestamps();
         });
     }

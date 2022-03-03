@@ -118,7 +118,7 @@ class DataController extends Controller
     //-------------------------------------
     public function datalist($id)
     {
-        $datalist = DB::table('dFata')
+        $datalist = DB::table('data')
             ->select('id', 'nama', 'skor', 'tipe_id', 'diagnosa_id', 'created_at', 'updated_at')
             ->where('tipe_id', $id)
             ->get();

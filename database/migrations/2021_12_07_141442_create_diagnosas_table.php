@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRiwayatDatasTable extends Migration
+class CreateDiagnosasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateRiwayatDatasTable extends Migration
      */
     public function up()
     {
-        Schema::create('riwayat_datas', function (Blueprint $table) {
+        Schema::create('diagnosas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('data_id');
-            $table->foreignId('riwayat_id');
+            $table->string('nama');
+            $table->foreignId('tipe_id')->constrained('tipes')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateRiwayatDatasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('riwayat_datas');
+        Schema::dropIfExists('diagnosas');
     }
 }

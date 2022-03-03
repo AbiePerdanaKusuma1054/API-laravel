@@ -40,10 +40,13 @@ class AkunController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'username' => 'required|min:3|unique:akuns',
+                'nomor_induk' => 'required|min:8|unique:akuns',
+                'nama' => 'required|min:3|unique:akuns',
                 'email' => 'required|email|unique:akuns',
                 'phone_number' => 'required|unique:akuns',
+                'role_id' => 'required',
                 'password' => 'required|min:8',
+                'jurusan' => 'required|min:2'
             ]);
 
             if ($validator->fails()) {
@@ -51,10 +54,13 @@ class AkunController extends Controller
                 return response()->json(['status' => false, 'message' => $error, 'data' => []], 422);
             } else {
                 $akun = new Akun;
-                $akun->username = $request->username;
+                $akun->nomor_induk = $request->nomor_induk;
+                $akun->nama = $request->nama;
                 $akun->email = $request->email;
                 $akun->phone_number = $request->phone_number;
+                $akun->role_id = $request->role_id;
                 $akun->password = Hash::make($request->password, ['rounds' => 12]);
+                $akun->jurusan = $request->jurusan;
                 $akun->image = "images/default.png";
                 $akun->save();
                 return response()->json(['status' => true, 'message' => 'Profile Created!', 'data' => $akun], 200);
@@ -72,30 +78,33 @@ class AkunController extends Controller
      */
     public function show(Request $request)
     {
-        $row = Akun::firstWhere('username', $request->username);
+        $row = Akun::firstWhere('nomor_induk', $request->nomor_induk);
         if (!$row) {
             $data = [
                 'status' => false,
-                'message' => 'Unregistered username!',
+                'message' => 'Nomor induk belum terdaftar!',
             ];
             return response()->json($data, 401);
         } else {
             if (!Hash::check($request->password, $row->password)) {
                 $data = [
                     'status' => false,
-                    'message' => 'Wrong Password!',
+                    'message' => 'Password salah!',
                 ];
                 return response()->json($data, 401);
             } else {
                 $data = [
                     'status' => true,
-                    'message' => 'Login Success!',
+                    'message' => 'Login Berhasil!',
                     'data' => [
                         "id" => $row->id,
-                        "username" => $row->username,
+                        "nomor_induk" => $row->nomor_induk,
+                        "nama" => $row->nama,
                         "email" => $row->email,
                         "phone_number" => $row->phone_number,
+                        "role_id" => $row->role_id,
                         "image" => $row->image,
+                        "jurusan" => $row->jurusan
                     ],
                 ];
                 return response()->json($data, 200);
@@ -124,25 +133,31 @@ class AkunController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $username = $request->username;
+        $nomor_induk = $request->nomor_induk;
+        $nama = $request->nama;
         $email = $request->email;
         $phone_number = $request->phone_number;
         $password = $request->password;
+        $jurusan = $request->jurusan;
         $image = $request->image;
 
         $akun = Akun::find($id);
-        $akun->username = $username;
+        $akun->nomor_induk = $nomor_induk;
+        $akun->nama = $nama;
         $akun->email = $email;
         $akun->phone_number = $phone_number;
         $akun->password = $password;
+        $akun->jurusan = $jurusan;
         $akun->image = $image;
         $akun->save();
 
         return response()->json([
-            'username' => $akun->username,
+            'nomor_induk' => $akun->nomor_induk,
+            'nama' => $akun->nama,
             'email' => $akun->email,
             'phone_number' => $akun->phone_number,
             'password' => $akun->password,
+            'jurusan' => $akun->jurusan,
             'image' => $akun->image,
             'result' => 'data successfully updated!',
         ]);

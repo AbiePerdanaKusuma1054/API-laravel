@@ -15,10 +15,13 @@ class CreateAkunsTable extends Migration
     {
         Schema::create('akuns', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
-            $table->string('email');
+            $table->string('nomor_induk')->unique();
+            $table->string('nama');
+            $table->string('email')->unique();
             $table->string('phone_number');
+            $table->foreignId('role_id')->constrained('roles')->onDelete('cascade');
             $table->string('password');
+            $table->string('jurusan');
             $table->string('image');
             $table->timestamps();
         });

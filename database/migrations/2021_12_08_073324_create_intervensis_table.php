@@ -16,7 +16,7 @@ class CreateIntervensisTable extends Migration
         Schema::create('intervensis', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->foreignId('diagnosa_id');
+            $table->foreignId('diagnosa_id')->constrained('diagnosas')->onDelete('cascade');
             $table->timestamps();
         });
     }

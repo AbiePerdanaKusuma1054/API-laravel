@@ -16,7 +16,8 @@ class CreateUraiansTable extends Migration
         Schema::create('uraians', function (Blueprint $table) {
             $table->id();
             $table->longText('nama');
-            $table->foreignId('intervensi_id');
+            $table->foreignId('intervensi_id')->constrained('intervensis')->onDelete('cascade');
+            $table->foreignId('kategori_id')->constrained('kategori_uraians')->onDelete('cascade');
             $table->timestamps();
         });
     }
