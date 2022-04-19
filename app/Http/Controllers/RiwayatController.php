@@ -19,6 +19,7 @@ class RiwayatController extends Controller
         $riwayat = new Riwayat;
         $riwayat->user_id = $request->user_id;
         $riwayat->intervensi_id = $request->intervensi_id;
+        $riwayat->pasien_id = $request->pasien_id;
         $riwayat->save();
 
         return response()->json([

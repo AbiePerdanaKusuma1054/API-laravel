@@ -42,12 +42,12 @@ class RiwayatDataController extends Controller
         //
         $ruraian = new Riwayat_data;
         $ruraian->data_id = $request->data_id;
-        $ruraian->riwayat_id = $request->riwayat_id;
+        $ruraian->riwayat_diagnosa_id = $request->riwayat_diagnosa_id;
         $ruraian->save();
 
         return response()->json([
             'data_id' => $ruraian->data_id,
-            'riwayat_id' => $ruraian->riwayat_id,
+            'riwayat_diagnosa_id' => $ruraian->riwayat_diagnosa_id,
             'result' => 'Create data successfully!'
         ]);
     }

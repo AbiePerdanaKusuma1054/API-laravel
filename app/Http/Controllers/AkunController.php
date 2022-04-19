@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Akun;
+use App\Models\Mahasiswa;
+use App\Models\Dosen;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
@@ -17,7 +20,6 @@ class AkunController extends Controller
     public function index()
     {
         //
-        return Akun::all();
     }
 
     /**
@@ -40,13 +42,9 @@ class AkunController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'nomor_induk' => 'required|min:8|unique:akuns',
-                'nama' => 'required|min:3|unique:akuns',
                 'email' => 'required|email|unique:akuns',
-                'phone_number' => 'required|unique:akuns',
                 'role_id' => 'required',
                 'password' => 'required|min:8',
-                'jurusan' => 'required|min:2'
             ]);
 
             if ($validator->fails()) {
@@ -54,14 +52,9 @@ class AkunController extends Controller
                 return response()->json(['status' => false, 'message' => $error, 'data' => []], 422);
             } else {
                 $akun = new Akun;
-                $akun->nomor_induk = $request->nomor_induk;
-                $akun->nama = $request->nama;
                 $akun->email = $request->email;
-                $akun->phone_number = $request->phone_number;
                 $akun->role_id = $request->role_id;
                 $akun->password = Hash::make($request->password, ['rounds' => 12]);
-                $akun->jurusan = $request->jurusan;
-                $akun->image = "images/default.png";
                 $akun->save();
                 return response()->json(['status' => true, 'message' => 'Profile Created!', 'data' => $akun], 200);
             }
@@ -78,11 +71,11 @@ class AkunController extends Controller
      */
     public function show(Request $request)
     {
-        $row = Akun::firstWhere('nomor_induk', $request->nomor_induk);
+        $row = Akun::firstWhere('email', $request->email);
         if (!$row) {
             $data = [
                 'status' => false,
-                'message' => 'Nomor induk belum terdaftar!',
+                'message' => 'Email belum terdaftar!',
             ];
             return response()->json($data, 401);
         } else {
@@ -93,18 +86,21 @@ class AkunController extends Controller
                 ];
                 return response()->json($data, 401);
             } else {
+                $mahasiswa = Mahasiswa::firstWhere('akun_id', $row->id);
+                $dosen = Dosen::firstWhere('akun_id', $row->id);
+                if ($mahasiswa == null) {
+                    $akun = $dosen;
+                } else {
+                    $akun = $mahasiswa;
+                }
                 $data = [
                     'status' => true,
                     'message' => 'Login Berhasil!',
                     'data' => [
                         "id" => $row->id,
-                        "nomor_induk" => $row->nomor_induk,
-                        "nama" => $row->nama,
                         "email" => $row->email,
-                        "phone_number" => $row->phone_number,
-                        "role_id" => $row->role_id,
-                        "image" => $row->image,
-                        "jurusan" => $row->jurusan
+                        "role_id" => $row->role,
+                        "biodata" => $akun,
                     ],
                 ];
                 return response()->json($data, 200);

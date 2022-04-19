@@ -15,10 +15,11 @@ class CreatePasiensTable extends Migration
     {
         Schema::create('pasiens', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('mahasiswa_id')->constrained('mahasiswas')->onDelete('cascade');
             $table->string('nama_pasien');
             $table->integer('umur');
             $table->string('kondisi')->nullable();
-            $table->enum('gender',['laki-laki','perempuan']);
+            $table->enum('gender', ['laki-laki', 'perempuan']);
             $table->timestamps();
         });
     }

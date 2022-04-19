@@ -40,12 +40,14 @@ class RiwayatUraianController extends Controller
         //
         $ruraian = new Riwayat_uraian;
         $ruraian->uraian_id = $request->uraian_id;
-        $ruraian->riwayat_id = $request->riwayat_id;
+        $ruraian->riwayat_diagnosa_id = $request->riwayat_diagnosa_id;
+        $ruraian->penjelasan_uraian = $request->penjelasan_uraian;
         $ruraian->save();
 
         return response()->json([
             'uraian_id' => $ruraian->uraian_id,
-            'riwayat_id' => $ruraian->riwayat_id,
+            'riwayat_diagnosa_id' => $ruraian->riwayat_diagnosa_id,
+            'penjelasan_uraian' => $ruraian->penjelasan_uraian,
             'result' => 'Create data successfully!'
         ]);
     }

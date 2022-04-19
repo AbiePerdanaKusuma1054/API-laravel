@@ -17,7 +17,8 @@ class RiwayatUraian extends Migration
         Schema::create('riwayat_uraians', function (Blueprint $table) {
             $table->id();
             $table->foreignId('uraian_id')->constrained('uraians')->onDelete('cascade');
-            $table->foreignId('riwayat_id')->constrained('riwayats')->onDelete('cascade');
+            $table->foreignId('riwayat_diagnosa_id')->constrained('riwayat_diagnosas')->onDelete('cascade');
+            $table->string('penjelasan_uraian');
             $table->timestamps();
         });
     }

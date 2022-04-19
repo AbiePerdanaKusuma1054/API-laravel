@@ -15,8 +15,9 @@ class CreateRiwayatTable extends Migration
     {
         Schema::create('riwayats', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('akuns')->onDelete('cascade');
-            $table->foreignId('intervensi_id')->constrained('intervensis')->onDelete('cascade');
+            // $table->foreignId('user_id')->constrained('akuns')->onDelete('cascade');
+            // $table->foreignId('intervensi_id')->constrained('intervensis')->onDelete('cascade');
+            // $table->foreignId('pasien_id')->constrained('pasiens')->onDelete('cascade');
             $table->timestamps();
         });
     }
